@@ -7,6 +7,12 @@ const multer = require('multer')
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage })
 
+router.get("/", async (req, res) => {
+    const allListings = await Listing.find({});
+    res.render("./listings/index.ejs", { allListings });
+}
+)
+
 router.route("/")
     .get(wrapAsync(listingControllers.index))
     .post(isLoggedIn, validateListing, upload.single('listing[image.url]'), wrapAsync(listingControllers.createListing))
